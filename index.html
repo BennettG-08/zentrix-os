@@ -34,41 +34,40 @@ canvas{
     display:flex;
     justify-content:center;
     align-items:center;
-    flex-direction:column;
 }
 
 .box{
     width:90%;
     max-width:850px;
     padding:35px;
-    background:rgba(0,0,0,.75);
+    background:rgba(0,0,0,0.80);
     border:2px solid #00ff66;
-    box-shadow:0 0 30px #00ff66;
+    box-shadow:0 0 35px #00ff66;
     border-radius:15px;
     text-align:center;
 }
 
 h1{
-    font-size:45px;
-    text-shadow:0 0 20px #00ff66;
+    font-size:50px;
+    text-shadow:0 0 25px #00ff66;
 }
 
 button{
-    margin-top:30px;
-    padding:18px 40px;
-    font-size:20px;
-    font-weight:bold;
+    margin-top:35px;
+    padding:18px 45px;
+    background:#000;
     color:#00ff66;
-    background:black;
     border:2px solid #00ff66;
     border-radius:10px;
+    font-size:20px;
+    font-weight:bold;
     cursor:pointer;
     box-shadow:0 0 20px #00ff66;
 }
 
 button:hover{
     background:#00ff66;
-    color:black;
+    color:#000;
 }
 
 #terminal{
@@ -80,8 +79,24 @@ button:hover{
 
 .title{
     text-align:center;
-    font-size:28px;
+    font-size:30px;
     margin-bottom:20px;
+    text-shadow:0 0 15px #00ff66;
+}
+
+.line{
+    overflow:hidden;
+    white-space:nowrap;
+    animation:typing 2s steps(40);
+}
+
+@keyframes typing{
+    from{
+        width:0;
+    }
+    to{
+        width:100%;
+    }
 }
 
 .blink{
@@ -94,21 +109,12 @@ button:hover{
     }
 }
 
-.line{
-    overflow:hidden;
-    white-space:nowrap;
-    animation:write 2s steps(40);
+.creator{
+    text-align:center;
+    margin-top:25px;
+    font-size:14px;
+    opacity:0.8;
 }
-
-@keyframes write{
-    from{
-        width:0;
-    }
-    to{
-        width:100%;
-    }
-}
-
 </style>
 
 </head>
@@ -116,7 +122,6 @@ button:hover{
 <body>
 
 <canvas id="matrix"></canvas>
-
 
 <div class="container">
 
@@ -135,18 +140,9 @@ INICIAR ZENTRIX OS
 ZENTRIX OS v9.0
 </div>
 
-
-<p class="line">
-> Sistema iniciado...
-</p>
-
-<p class="line">
-> Modo leyenda activado...
-</p>
-
-<p class="line">
-> Comunidad cargada...
-</p>
+<p class="line">> Sistema iniciado...</p>
+<p class="line">> Modo leyenda activado...</p>
+<p class="line">> Comunidad cargada...</p>
 
 <br>
 
@@ -174,6 +170,10 @@ Siempre humillados por Zentrix
 ▋ Esperando comando...
 </p>
 
+<p class="creator">
+El creador © Bennett 2026
+</p>
+
 </div>
 
 </div>
@@ -192,51 +192,49 @@ document.getElementById("terminal").style.display="block";
 }
 
 
-// MATRIX
+// Efecto Matrix
 
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
 
-
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 
+const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&";
 
-let letters="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&";
+const size=16;
 
-let fontSize=16;
-
-let columns=canvas.width/fontSize;
+let columns=canvas.width/size;
 
 let drops=[];
-
 
 for(let i=0;i<columns;i++){
     drops[i]=1;
 }
 
 
-function draw(){
+function matrix(){
 
 ctx.fillStyle="rgba(0,0,0,0.05)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
-
 ctx.fillStyle="#00ff66";
-ctx.font=fontSize+"px monospace";
+ctx.font=size+"px monospace";
 
 
 for(let i=0;i<drops.length;i++){
 
-let text=letters[Math.floor(Math.random()*letters.length)];
+let text=chars[Math.floor(Math.random()*chars.length)];
 
-ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+ctx.fillText(
+text,
+i*size,
+drops[i]*size
+);
 
 
-if(drops[i]*fontSize>canvas.height && Math.random()>0.975){
-
-drops[i]=0;
-
+if(drops[i]*size > canvas.height && Math.random()>0.975){
+    drops[i]=0;
 }
 
 drops[i]++;
@@ -246,7 +244,7 @@ drops[i]++;
 }
 
 
-setInterval(draw,35);
+setInterval(matrix,35);
 
 
 window.onresize=function(){
@@ -257,7 +255,6 @@ canvas.height=window.innerHeight;
 };
 
 </script>
-
 
 </body>
 </html>
