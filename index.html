@@ -7,7 +7,6 @@
 <title>ZENTRIX OS</title>
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -19,7 +18,7 @@ body{
     overflow:hidden;
     background:#000;
     color:#00ff66;
-    font-family:Consolas, monospace;
+    font-family:Consolas,monospace;
 }
 
 canvas{
@@ -29,156 +28,114 @@ canvas{
     z-index:-1;
 }
 
-
 .container{
-    width:100%;
     height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
 }
 
-
 .box{
     width:90%;
-    max-width:900px;
-    padding:40px;
-    background:rgba(0,0,0,.82);
+    max-width:850px;
+    padding:35px;
+    background:rgba(0,0,0,.85);
     border:2px solid #00ff66;
     border-radius:15px;
-    box-shadow:0 0 40px #00ff66;
-    text-align:center;
+    box-shadow:0 0 35px #00ff66;
 }
 
-
 .logo{
+    text-align:center;
     font-size:55px;
-    letter-spacing:5px;
+    font-weight:bold;
     text-shadow:0 0 25px #00ff66;
 }
 
-
-.subtitle{
+.sub{
+    text-align:center;
     margin-top:10px;
-    font-size:18px;
 }
-
 
 button{
-
-    margin-top:35px;
+    display:block;
+    margin:35px auto;
     padding:18px 45px;
-    font-size:20px;
-    font-weight:bold;
+    background:black;
     color:#00ff66;
-    background:#000;
     border:2px solid #00ff66;
     border-radius:12px;
+    font-size:20px;
+    font-weight:bold;
     cursor:pointer;
-    box-shadow:0 0 25px #00ff66;
-
+    box-shadow:0 0 20px #00ff66;
 }
-
 
 button:hover{
-
     background:#00ff66;
-    color:#000;
-
+    color:black;
 }
-
 
 #terminal{
-
     display:none;
-    margin-top:30px;
-    text-align:left;
     line-height:1.8;
-
 }
 
+.center{
+    text-align:center;
+}
 
 .title{
-
+    font-size:30px;
     text-align:center;
-    font-size:32px;
     text-shadow:0 0 20px #00ff66;
-
+    margin-bottom:20px;
 }
-
 
 .line{
-
     white-space:nowrap;
     overflow:hidden;
-    animation:typing 2s steps(40);
-
+    animation:type 2s steps(40);
 }
 
-
-@keyframes typing{
-
-from{
-    width:0;
+@keyframes type{
+    from{width:0;}
+    to{width:100%;}
 }
-
-to{
-    width:100%;
-}
-
-}
-
 
 .blink{
-
     animation:blink 1s infinite;
-
 }
-
 
 @keyframes blink{
-
-50%{
-    opacity:0;
+    50%{opacity:0;}
 }
-
-}
-
 
 .creator{
-
     text-align:center;
     margin-top:25px;
     font-size:14px;
     opacity:.8;
-
 }
-
 </style>
 
 </head>
 
-
 <body>
 
-
 <canvas id="matrix"></canvas>
-
 
 <div class="container">
 
 <div class="box">
 
-
 <div class="logo">
 ZENTRIX OS
 </div>
 
-
-<div class="subtitle">
+<div class="sub">
 Sistema futurista v9.0
 </div>
-
 
 <button onclick="startSystem()">
 INICIAR ZENTRIX OS
@@ -187,43 +144,143 @@ INICIAR ZENTRIX OS
 
 <div id="terminal">
 
-
 <div class="title">
 ZENTRIX OS v9.0
 </div>
 
-
 <p class="line">
-> Inicializando sistema...
+> Sistema iniciado...
 </p>
-
-
-<p class="line">
-> Cargando módulos...
-</p>
-
 
 <p class="line">
 > Modo leyenda activado...
 </p>
 
+<p class="line">
+> Comunidad cargada...
+</p>
 
 <br>
 
+<div class="center">
 
 <h2>
 LEGENDARIOS DE AMÉRICA
 </h2>
 
-
 <br>
-
 
 <p>
 ⭐ Leyendas originales ⭐
 </p>
 
-
 <p>
 Siempre humillados por Zentrix
 </p>
+
+<br>
+
+<p>
+⚡ SISTEMA ZENTRIX ACTIVADO ⚡
+</p>
+
+<p>
+MODO LEYENDA: ONLINE
+</p>
+
+<p>
+MODO DEMOSTRACIÓN COMPLETADO
+</p>
+
+<br>
+
+<p class="blink">
+▋ Esperando comando...
+</p>
+
+<p class="creator">
+El creador © Bennett 2026
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function startSystem(){
+
+document.querySelector("button").style.display="none";
+
+document.getElementById("terminal").style.display="block";
+
+}
+
+
+// MATRIX
+
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&";
+
+const size=16;
+
+let columns=canvas.width/size;
+
+let drops=[];
+
+for(let i=0;i<columns;i++){
+    drops[i]=1;
+}
+
+
+function draw(){
+
+ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#00ff66";
+ctx.font=size+"px monospace";
+
+
+for(let i=0;i<drops.length;i++){
+
+let text=chars[Math.floor(Math.random()*chars.length)];
+
+ctx.fillText(text,i*size,drops[i]*size);
+
+
+if(drops[i]*size>canvas.height && Math.random()>0.975){
+    drops[i]=0;
+}
+
+drops[i]++;
+
+}
+
+}
+
+setInterval(draw,35);
+
+
+window.onresize=function(){
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+};
+
+</script>
+
+
+</body>
+</html>
