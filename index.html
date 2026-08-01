@@ -14,17 +14,19 @@
 }
 
 body{
-    height:100vh;
-    overflow:hidden;
     background:#000;
     color:#00ff66;
-    font-family:Consolas,monospace;
+    height:100vh;
+    overflow:hidden;
+    font-family:"Courier New", monospace;
 }
 
-canvas{
+#matrix{
     position:fixed;
     top:0;
     left:0;
+    width:100%;
+    height:100%;
     z-index:-1;
 }
 
@@ -33,90 +35,114 @@ canvas{
     display:flex;
     justify-content:center;
     align-items:center;
+    padding:20px;
 }
 
-.box{
-    width:90%;
+.panel{
+    width:95%;
     max-width:850px;
-    padding:35px;
     background:rgba(0,0,0,.85);
     border:2px solid #00ff66;
     border-radius:15px;
-    box-shadow:0 0 35px #00ff66;
+    padding:35px;
+    box-shadow:
+    0 0 15px #00ff66,
+    0 0 40px #00ff66;
 }
+
 
 .logo{
     text-align:center;
-    font-size:55px;
+    font-size:50px;
     font-weight:bold;
-    text-shadow:0 0 25px #00ff66;
+    letter-spacing:5px;
+    text-shadow:0 0 20px #00ff66;
 }
+
 
 .sub{
     text-align:center;
     margin-top:10px;
 }
 
-button{
+
+#start{
     display:block;
     margin:35px auto;
-    padding:18px 45px;
-    background:black;
+    padding:18px 40px;
+    background:#000;
     color:#00ff66;
     border:2px solid #00ff66;
-    border-radius:12px;
+    border-radius:10px;
     font-size:20px;
     font-weight:bold;
     cursor:pointer;
     box-shadow:0 0 20px #00ff66;
 }
 
-button:hover{
+
+#start:hover{
     background:#00ff66;
-    color:black;
+    color:#000;
 }
+
 
 #terminal{
     display:none;
-    line-height:1.8;
+    animation:entrada 1s;
 }
+
+
+@keyframes entrada{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+.title{
+    text-align:center;
+    font-size:30px;
+    margin-bottom:20px;
+    text-shadow:0 0 15px #00ff66;
+}
+
+
+.text{
+    line-height:1.8;
+    font-size:18px;
+}
+
 
 .center{
     text-align:center;
 }
 
-.title{
-    font-size:30px;
-    text-align:center;
-    text-shadow:0 0 20px #00ff66;
-    margin-bottom:20px;
-}
-
-.line{
-    white-space:nowrap;
-    overflow:hidden;
-    animation:type 2s steps(40);
-}
-
-@keyframes type{
-    from{width:0;}
-    to{width:100%;}
-}
 
 .blink{
     animation:blink 1s infinite;
 }
 
+
 @keyframes blink{
-    50%{opacity:0;}
+    50%{
+        opacity:0;
+    }
 }
 
+
 .creator{
-    text-align:center;
     margin-top:25px;
-    font-size:14px;
+    text-align:center;
     opacity:.8;
+    font-size:14px;
 }
+
 </style>
 
 </head>
@@ -125,21 +151,26 @@ button:hover{
 
 <canvas id="matrix"></canvas>
 
+
 <div class="container">
 
-<div class="box">
+<div class="panel">
+
 
 <div class="logo">
 ZENTRIX OS
 </div>
 
+
 <div class="sub">
 Sistema futurista v9.0
 </div>
 
-<button onclick="startSystem()">
+
+<button id="start">
 INICIAR ZENTRIX OS
 </button>
+
 
 
 <div id="terminal">
@@ -148,19 +179,18 @@ INICIAR ZENTRIX OS
 ZENTRIX OS v9.0
 </div>
 
-<p class="line">
-> Sistema iniciado...
-</p>
 
-<p class="line">
-> Modo leyenda activado...
-</p>
+<div class="text">
 
-<p class="line">
-> Comunidad cargada...
-</p>
+<p>> Sistema iniciado...</p>
+
+<p>> Modo leyenda activado...</p>
+
+<p>> Comunidad cargada...</p>
+
 
 <br>
+
 
 <div class="center">
 
@@ -168,58 +198,81 @@ ZENTRIX OS v9.0
 LEGENDARIOS DE AMÉRICA
 </h2>
 
+
 <br>
+
 
 <p>
 ⭐ Leyendas originales ⭐
 </p>
 
+
 <p>
 Siempre humillados por Zentrix
 </p>
 
+
 <br>
+
 
 <p>
 ⚡ SISTEMA ZENTRIX ACTIVADO ⚡
 </p>
 
+
 <p>
 MODO LEYENDA: ONLINE
 </p>
+
 
 <p>
 MODO DEMOSTRACIÓN COMPLETADO
 </p>
 
+
 <br>
+
 
 <p class="blink">
 ▋ Esperando comando...
 </p>
 
+
 <p class="creator">
 El creador © Bennett 2026
 </p>
 
-</div>
 
 </div>
 
 </div>
 
 </div>
+
+
+</div>
+
+</div>
+
 
 
 <script>
 
-function startSystem(){
 
-document.querySelector("button").style.display="none";
+// BOTÓN
 
-document.getElementById("terminal").style.display="block";
+const boton=document.getElementById("start");
+const terminal=document.getElementById("terminal");
 
-}
+
+boton.addEventListener("click",function(){
+
+boton.style.display="none";
+
+terminal.style.display="block";
+
+});
+
 
 
 // MATRIX
@@ -227,57 +280,87 @@ document.getElementById("terminal").style.display="block";
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
 
+
+function tamaño(){
+
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 
-const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&";
-
-const size=16;
-
-let columns=canvas.width/size;
-
-let drops=[];
-
-for(let i=0;i<columns;i++){
-    drops[i]=1;
 }
 
+tamaño();
 
-function draw(){
+window.addEventListener("resize",tamaño);
 
-ctx.fillStyle="rgba(0,0,0,0.05)";
+
+
+const letras="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&";
+
+const tamañoLetra=16;
+
+let columnas=canvas.width/tamañoLetra;
+
+let gotas=[];
+
+
+function iniciarGotas(){
+
+columnas=canvas.width/tamañoLetra;
+
+gotas=[];
+
+for(let i=0;i<columnas;i++){
+
+gotas[i]=1;
+
+}
+
+}
+
+iniciarGotas();
+
+
+function lluvia(){
+
+ctx.fillStyle="rgba(0,0,0,0.06)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
+
 ctx.fillStyle="#00ff66";
-ctx.font=size+"px monospace";
+ctx.font=tamañoLetra+"px monospace";
 
 
-for(let i=0;i<drops.length;i++){
+for(let i=0;i<gotas.length;i++){
 
-let text=chars[Math.floor(Math.random()*chars.length)];
+let texto=
+letras[Math.floor(Math.random()*letras.length)];
 
-ctx.fillText(text,i*size,drops[i]*size);
+
+ctx.fillText(
+texto,
+i*tamañoLetra,
+gotas[i]*tamañoLetra
+);
 
 
-if(drops[i]*size>canvas.height && Math.random()>0.975){
-    drops[i]=0;
+
+if(gotas[i]*tamañoLetra>canvas.height
+&& Math.random()>0.97){
+
+gotas[i]=0;
+
 }
 
-drops[i]++;
+
+gotas[i]++;
 
 }
 
 }
 
-setInterval(draw,35);
 
+setInterval(lluvia,40);
 
-window.onresize=function(){
-
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-};
 
 </script>
 
