@@ -1,150 +1,209 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>ZENTRIX OS</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
-body{
-    background:#000;
-    color:#00ff66;
-    font-family:monospace;
-    overflow:hidden;
-    height:100vh;
+html{
+    min-height:100%;
 }
 
+body{
+
+    background:#000;
+    color:#00ff66;
+    font-family:Consolas, monospace;
+    overflow-y:auto;
+    min-height:100vh;
+
+}
+
+
 canvas{
+
     position:fixed;
     top:0;
     left:0;
     width:100%;
     height:100%;
     z-index:-1;
+
 }
 
-.main{
-    height:100vh;
+
+.container{
+
     width:100%;
+    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
+    padding:30px;
+
 }
 
+
 .box{
+
     width:100%;
-    height:100%;
+    min-height:100vh;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
     background:rgba(0,0,0,0.55);
-    padding:25px;
+
 }
+
 
 .logo{
-    font-size:70px;
+
+    font-size:clamp(40px,8vw,80px);
     font-weight:bold;
-    text-shadow:0 0 25px #00ff66;
+    letter-spacing:8px;
     text-align:center;
+    text-shadow:
+    0 0 15px #00ff66,
+    0 0 40px #00ff66;
+
 }
+
 
 .subtitle{
-    margin-top:15px;
-    font-size:22px;
+
+    margin-top:20px;
+    font-size:clamp(16px,3vw,25px);
     text-align:center;
+
 }
+
 
 button{
-    margin-top:40px;
-    padding:18px 50px;
+
+    margin-top:45px;
+    padding:20px 60px;
     background:#000;
     color:#00ff66;
-    border:2px solid #00ff66;
-    border-radius:12px;
+    border:3px solid #00ff66;
+    border-radius:15px;
     font-size:22px;
+    font-weight:bold;
     cursor:pointer;
-    box-shadow:0 0 20px #00ff66;
+    box-shadow:0 0 25px #00ff66;
+
 }
+
 
 button:hover{
+
     background:#00ff66;
     color:#000;
+
 }
+
 
 #terminal{
+
     display:none;
-    width:90%;
+    width:95%;
     max-width:900px;
-    font-size:20px;
+    font-size:clamp(15px,3vw,22px);
     line-height:1.7;
+    padding-bottom:50px;
+
 }
+
 
 .title{
+
     text-align:center;
-    font-size:40px;
-    margin-bottom:25px;
+    font-size:clamp(25px,5vw,45px);
+    margin-bottom:30px;
     text-shadow:0 0 20px #00ff66;
+
 }
+
 
 .center{
+
     text-align:center;
+
 }
+
 
 .blink{
+
     animation:blink 1s infinite;
+
 }
 
+
 @keyframes blink{
+
     50%{
         opacity:0;
     }
+
 }
 
+
 .creator{
-    margin-top:30px;
+
+    margin-top:40px;
     text-align:center;
-    font-size:15px;
+    font-size:16px;
+    padding-bottom:40px;
+
 }
+
 </style>
 
 </head>
 
 <body>
 
+
 <canvas id="matrix"></canvas>
 
 
-<div class="main">
+<div class="container">
 
 <div class="box">
 
 
-<div id="home">
+<div id="inicio">
 
 <div class="logo">
 ZENTRIX OS
 </div>
 
+
 <div class="subtitle">
 ZENTRIX CORE SYSTEM // SECURE TERMINAL v9.0
 </div>
 
-<button onclick="startOS()">
+
+<button onclick="iniciar()">
 INICIAR ZENTRIX OS
 </button>
+
 
 </div>
 
 
 <div id="terminal">
+
 
 <div class="title">
 ZENTRIX OS v9.0
@@ -152,23 +211,32 @@ ZENTRIX OS v9.0
 
 
 <p>> Inicializando sistema...</p>
+
 <p>> Verificando módulos...</p>
+
 <p>> Conexión establecida...</p>
+
 <p>> Modo leyenda activado...</p>
+
 
 <br>
 
+
 <div class="center">
+
 
 <h2>
 LEGENDARIOS DE AMÉRICA
 </h2>
 
+
 <br>
+
 
 <p>
 ⭐ Leyendas originales ⭐
 </p>
+
 
 <p>
 Siempre humillados por Zentrix
@@ -212,81 +280,136 @@ El creador © Bennett 2026
 
 <script>
 
-function startOS(){
 
-document.getElementById("home").style.display="none";
+function iniciar(){
+
+document.getElementById("inicio").style.display="none";
 
 document.getElementById("terminal").style.display="block";
 
 }
 
 
-// MATRIX
+
+// LLUVIA MATRIX
+
 
 const canvas=document.getElementById("matrix");
+
 const ctx=canvas.getContext("2d");
 
 
-function resize(){
+
+function ajustar(){
+
 canvas.width=window.innerWidth;
+
 canvas.height=window.innerHeight;
+
 }
 
-resize();
-
-window.addEventListener("resize",resize);
+ajustar();
 
 
-const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&";
-
-const size=18;
-
-let columns=canvas.width/size;
-
-let drops=[];
+window.addEventListener("resize",ajustar);
 
 
-for(let i=0;i<columns;i++){
-drops[i]=1;
+
+const caracteres="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&";
+
+const tamaño=18;
+
+let columnas=canvas.width/tamaño;
+
+let gotas=[];
+
+
+
+function crearGotas(){
+
+columnas=canvas.width/tamaño;
+
+gotas=[];
+
+
+for(let i=0;i<columnas;i++){
+
+gotas[i]=1;
+
+}
+
 }
 
 
-function draw(){
+crearGotas();
+
+
+
+function lluvia(){
+
 
 ctx.fillStyle="rgba(0,0,0,0.06)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
 
-
-ctx.fillStyle="#00ff66";
-ctx.font=size+"px monospace";
-
-
-for(let i=0;i<drops.length;i++){
-
-let text=chars[Math.floor(Math.random()*chars.length)];
-
-ctx.fillText(
-text,
-i*size,
-drops[i]*size
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
 );
 
 
-if(drops[i]*size>canvas.height && Math.random()>0.97){
-drops[i]=0;
+
+ctx.fillStyle="#00ff66";
+
+ctx.font=tamaño+"px monospace";
+
+
+
+for(let i=0;i<gotas.length;i++){
+
+
+let texto=
+caracteres[
+Math.floor(Math.random()*caracteres.length)
+];
+
+
+
+ctx.fillText(
+texto,
+i*tamaño,
+gotas[i]*tamaño
+);
+
+
+
+if(
+gotas[i]*tamaño>canvas.height &&
+Math.random()>0.97
+){
+
+gotas[i]=0;
+
 }
 
 
-drops[i]++;
+
+gotas[i]++;
+
 
 }
 
+
 }
 
 
-setInterval(draw,40);
+
+setInterval(lluvia,40);
+
+
 
 </script>
+
 
 </body>
 </html>
