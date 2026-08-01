@@ -14,11 +14,11 @@
 }
 
 body{
-    background:black;
+    background:#000;
     color:#00ff66;
-    height:100vh;
+    font-family:monospace;
     overflow:hidden;
-    font-family:Consolas,monospace;
+    height:100vh;
 }
 
 canvas{
@@ -30,7 +30,7 @@ canvas{
     z-index:-1;
 }
 
-.container{
+.main{
     height:100vh;
     width:100%;
     display:flex;
@@ -38,56 +38,58 @@ canvas{
     align-items:center;
 }
 
-.panel{
+.box{
     width:100%;
     height:100%;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    background:rgba(0,0,0,.45);
-    padding:30px;
+    background:rgba(0,0,0,0.55);
+    padding:25px;
 }
 
 .logo{
-    font-size:75px;
+    font-size:70px;
     font-weight:bold;
-    text-shadow:0 0 30px #00ff66;
+    text-shadow:0 0 25px #00ff66;
+    text-align:center;
 }
 
 .subtitle{
-    font-size:22px;
     margin-top:15px;
+    font-size:22px;
+    text-align:center;
 }
 
 button{
     margin-top:40px;
-    padding:20px 60px;
-    background:black;
+    padding:18px 50px;
+    background:#000;
     color:#00ff66;
-    border:3px solid #00ff66;
-    border-radius:15px;
-    font-size:25px;
+    border:2px solid #00ff66;
+    border-radius:12px;
+    font-size:22px;
     cursor:pointer;
-    box-shadow:0 0 25px #00ff66;
+    box-shadow:0 0 20px #00ff66;
 }
 
 button:hover{
     background:#00ff66;
-    color:black;
+    color:#000;
 }
 
 #terminal{
     display:none;
     width:90%;
     max-width:900px;
-    font-size:22px;
-    line-height:1.8;
+    font-size:20px;
+    line-height:1.7;
 }
 
 .title{
     text-align:center;
-    font-size:45px;
+    font-size:40px;
     margin-bottom:25px;
     text-shadow:0 0 20px #00ff66;
 }
@@ -107,9 +109,9 @@ button:hover{
 }
 
 .creator{
+    margin-top:30px;
     text-align:center;
-    margin-top:35px;
-    font-size:16px;
+    font-size:15px;
 }
 </style>
 
@@ -119,21 +121,23 @@ button:hover{
 
 <canvas id="matrix"></canvas>
 
-<div class="container">
 
-<div class="panel">
+<div class="main">
 
-<div id="inicio">
+<div class="box">
+
+
+<div id="home">
 
 <div class="logo">
 ZENTRIX OS
 </div>
 
 <div class="subtitle">
-Sistema futurista v9.0
+ZENTRIX CORE SYSTEM // SECURE TERMINAL v9.0
 </div>
 
-<button onclick="iniciar()">
+<button onclick="startOS()">
 INICIAR ZENTRIX OS
 </button>
 
@@ -146,9 +150,11 @@ INICIAR ZENTRIX OS
 ZENTRIX OS v9.0
 </div>
 
-<p>> Sistema iniciado...</p>
+
+<p>> Inicializando sistema...</p>
+<p>> Verificando módulos...</p>
+<p>> Conexión establecida...</p>
 <p>> Modo leyenda activado...</p>
-<p>> Comunidad cargada...</p>
 
 <br>
 
@@ -179,7 +185,7 @@ MODO LEYENDA: ONLINE
 </p>
 
 <p>
-MODO DEMOSTRACIÓN COMPLETADO
+ESTADO: OPERATIVO
 </p>
 
 <br>
@@ -188,13 +194,16 @@ MODO DEMOSTRACIÓN COMPLETADO
 ▋ Esperando comando...
 </p>
 
+
 <p class="creator">
 El creador © Bennett 2026
 </p>
 
+
 </div>
 
 </div>
+
 
 </div>
 
@@ -203,9 +212,9 @@ El creador © Bennett 2026
 
 <script>
 
-function iniciar(){
+function startOS(){
 
-document.getElementById("inicio").style.display="none";
+document.getElementById("home").style.display="none";
 
 document.getElementById("terminal").style.display="block";
 
@@ -217,48 +226,65 @@ document.getElementById("terminal").style.display="block";
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
 
-canvas.width=innerWidth;
-canvas.height=innerHeight;
 
-let letras="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&";
-let tamaño=18;
-let columnas=canvas.width/tamaño;
-let gotas=[];
-
-for(let i=0;i<columnas;i++){
-    gotas[i]=1;
+function resize(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 }
 
-function matrix(){
+resize();
 
-ctx.fillStyle="rgba(0,0,0,.06)";
+window.addEventListener("resize",resize);
+
+
+const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&";
+
+const size=18;
+
+let columns=canvas.width/size;
+
+let drops=[];
+
+
+for(let i=0;i<columns;i++){
+drops[i]=1;
+}
+
+
+function draw(){
+
+ctx.fillStyle="rgba(0,0,0,0.06)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
+
 ctx.fillStyle="#00ff66";
-ctx.font=tamaño+"px monospace";
+ctx.font=size+"px monospace";
 
-for(let i=0;i<gotas.length;i++){
 
-let texto=letras[Math.floor(Math.random()*letras.length)];
+for(let i=0;i<drops.length;i++){
 
-ctx.fillText(texto,i*tamaño,gotas[i]*tamaño);
+let text=chars[Math.floor(Math.random()*chars.length)];
 
-if(gotas[i]*tamaño>canvas.height && Math.random()>0.97){
-    gotas[i]=0;
+ctx.fillText(
+text,
+i*size,
+drops[i]*size
+);
+
+
+if(drops[i]*size>canvas.height && Math.random()>0.97){
+drops[i]=0;
 }
 
-gotas[i]++;
+
+drops[i]++;
 
 }
 
 }
 
-setInterval(matrix,40);
 
-window.onresize=function(){
-canvas.width=innerWidth;
-canvas.height=innerHeight;
-};
+setInterval(draw,40);
 
 </script>
 
